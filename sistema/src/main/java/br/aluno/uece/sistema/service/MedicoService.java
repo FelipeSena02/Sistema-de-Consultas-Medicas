@@ -2,6 +2,8 @@ package br.aluno.uece.sistema.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import br.aluno.uece.sistema.model.*;
+import br.aluno.uece.sistema.repository.*;
 import java.util.List;
 
 // Serviço Médico

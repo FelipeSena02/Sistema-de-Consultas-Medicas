@@ -1,5 +1,7 @@
 package br.aluno.uece.sistema.service;
 
+import br.aluno.uece.sistema.repository.*;
+import br.aluno.uece.sistema.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -51,4 +53,10 @@ public class ConsultaService {
 
         return consultaRepository.save(consulta);
     }
+    public List<Consulta> findByMedicoAndDataHoraBetween(Long medicoId, LocalDateTime start, LocalDateTime end) {
+        Medico medico = medicoRepository.findById(medicoId)
+                .orElseThrow(() -> new RuntimeException("Médico não encontrado"));
+        return consultaRepository.findByMedicoAndDataHoraBetween(medico, start, end);
+    }
+
 }
