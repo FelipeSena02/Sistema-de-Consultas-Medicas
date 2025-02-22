@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultas Agendadas</title>
+    <link rel="stylesheet" href="assets/css/consultaMedico.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Consultas Agendadas</h2>
+        <table>
+            <tr>
+                <th>Paciente</th>
+                <th>Data</th>
+                <th>Horário</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>João Silva</td>
+                <td>25/02/2025</td>
+                <td>14:30</td>
+                <td>Confirmada</td>
+            </tr>
+            <tr>
+                <td>Maria Souza</td>
+                <td>26/02/2025</td>
+                <td>10:00</td>
+                <td>Pendente</td>
+            </tr>
+            <tr>
+                <td>Carlos Mendes</td>
+                <td>27/02/2025</td>
+                <td>16:00</td>
+                <td>Cancelada</td>
+            </tr>
+        </table>
+
+        <h2>Realizar Consulta</h2>
+        <form>
+            <div class="form-group">
+                <label for="descricao">Descrição da Consulta:</label>
+                <textarea id="descricao" rows="5" placeholder="Digite os sintomas, tratamento sugerido, medicamentos, exames..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="plano">Paciente tem plano de saúde?</label>
+                <select id="plano">
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+            </div>
+            <div class="form-group" id="valorConsulta" style="display: none;">
+                <label for="valor">Valor da Consulta:</label>
+                <input type="text" id="valor" placeholder="R$ 0,00">
+            </div>
+            <button type="submit">Finalizar Consulta</button>
+        </form>
+    </div>
+
+</body>
+</html>

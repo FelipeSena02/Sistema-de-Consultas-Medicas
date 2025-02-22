@@ -1,0 +1,64 @@
+h1 {
+    text-align: center;
+}
+
+section.formulario{
+    padding: 80px 4%;
+
+}
+
+form{
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+form input{
+    width: 100%;
+    background-color:#89CFF0 ;
+    border: 0;
+    outline: 0;
+    padding: 20px 15px;
+    color: #fff;
+    font-size: 18px;
+}
+form input::placeholder{
+    color: #fff;
+}
+
+form .btn-enviar{
+ margin-top: 20px;
+ text-align: center;
+}
+form .btn-enviar input[type=submit]{
+    width: 150px;
+    background-color: #89CFF0;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: blue; /* Muda a cor quando marcado */
+    cursor: pointer;
+}
+.entrar{
+    display: block;
+    width: 150px;
+    background-color: #89CFF0;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+   
+}
+section .btn{
+    margin-top: 20px;
+    text-align: center;
+}
