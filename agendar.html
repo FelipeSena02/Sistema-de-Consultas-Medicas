@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marcar Consulta</title>
+    <link rel="stylesheet" href="./assets/css/realizar.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Marcar Consulta</h2>
+        <input type="text" id="search" placeholder="Pesquisar especialista...">
+        <div id="results"></div>
+        <form id="appointment-form">
+            <label for="specialist">Especialista:</label>
+            <select id="specialist">
+                <option value="">Selecione um especialista</option>
+                <option value="cardiologista">Cardiologista</option>
+                <option value="dermatologista">Dermatologista</option>
+                <option value="ortopedista">Ortopedista</option>
+                <option value="pediatra">Pediatra</option>
+                <option value="ginecologista">Ginecologista</option>
+                <option value="clinico">Clinico Geral</option>
+            </select>
+            <label for="date">Data:</label>
+            <input type="date" id="date" required>
+            <label for="time">Horário:</label>
+            <input type="time" id="time" required>
+            <button type="submit">Marcar Consulta</button>
+        </form>
+    </div>
+</body>
+</html>
