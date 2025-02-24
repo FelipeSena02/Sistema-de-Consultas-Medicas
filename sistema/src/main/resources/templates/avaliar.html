@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação da Consulta</title>
+    <link rel="stylesheet" href="/css/avaliar.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Avaliação da Consulta</h2>
+        <form id="review-form">
+            <label for="appointment-id">ID da Consulta:</label>
+            <input type="number" id="appointment-id" placeholder="Digite o ID da consulta" required min="1">
+
+
+            <label for="rating">Nota:</label>
+            <div class="rating">
+                <input type="radio" id="star1" name="rating" value="5">
+                <label for="star1" class="star">&#9733;</label>
+                <input type="radio" id="star2" name="rating" value="4">
+                <label for="star2" class="star">&#9733;</label>
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3" class="star">&#9733;</label>
+                <input type="radio" id="star4" name="rating" value="2">
+                <label for="star4" class="star">&#9733;</label>
+                <input type="radio" id="star5" name="rating" value="1">
+                <label for="star5" class="star">&#9733;</label>
+            </div>
+
+            <label for="comments">Comentários:</label>
+            <textarea id="comments" placeholder="Deixe seu comentário" rows="4"></textarea>
+
+            <button type="submit">Enviar Avaliação</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('review-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const consultaId = document.getElementById('appointment-id').value;
+            const estrelas = document.querySelector('input[name="rating"]:checked').value;
+            const comentario = document.getElementById('comments').value;
+
+            const dados = {
+                consultaId: consultaId,
+                estrelas: parseInt(estrelas),
+                comentario: comentario
+            };
+
+            fetch('/avaliacao/salvar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dados)
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert('Avaliação enviada com sucesso!');
+                    window.location.href = '/paciente/home';
+                })
+                .catch(error => {
+                    alert('Erro ao enviar avaliação');
+                    console.error('Erro:', error);
+                });
+        });
+
+    </script>
+</body>
+</html>

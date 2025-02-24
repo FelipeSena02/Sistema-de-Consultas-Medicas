@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultas Agendadas</title>
+    <link rel="stylesheet" href="/css/consultaMedico.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        .success {
+            border-color: green !important;
+            background-color: #e8f5e9 !important;
+        }
+
+        .error {
+            border-color: red !important;
+            background-color: #ffebee !important;
+        }
+
+        .btn-selecionar {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .btn-selecionar.success {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Consultas Agendadas</h2>
+    <table>
+        <tr>
+            <th>Paciente</th>
+            <th>Data</th>
+            <th>Horário</th>
+            <th>Status</th>
+            <th>Ação</th> <!-- Nova coluna -->
+        </tr>
+        <!-- Corrigindo para consultas (plural) -->
+        <tr th:each="consulta : ${consultas}">
+            <td th:text="${consulta.pacienteNome}">João Silva</td>
+            <td th:text="${#temporals.format(consulta.data, 'dd/MM/yyyy')}">25/02/2025</td>
+            <td th:text="${#temporals.format(consulta.hora, 'HH:mm')}">14:30</td>
+            <td th:text="${consulta.status}">Confirmada</td>
+            <td>
+                <button type="button"
+                        class="btn-selecionar"
+                        th:data-consulta-id="${consulta.id}"
+                        th:onclick="'selecionarConsulta(' + ${consulta.id} + ')'">
+                    Selecionar
+                </button>
+            </td>
+        </tr>
+    </table>
+
+
+    <h2>Realizar Consulta</h2>
+    <form id="formConsulta" th:action="@{/consulta/finalizar}" method="POST">
+        <input type="hidden" name="consultaId" th:value="${consultaId}"/>
+
+        <div class="form-group">
+            <label for="descricao">Descrição da Consulta:</label>
+            <textarea id="descricao" name="descricao" rows="5"
+                      placeholder="Digite os sintomas, tratamento sugerido, medicamentos, exames..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="plano">Paciente tem plano de saúde?</label>
+            <select id="plano" name="plano">
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="valorConsulta" style="display: none;">
+            <label for="valor">Valor da Consulta:</label>
+            <input type="text" id="valor" name="valor" placeholder="R$ 0,00">
+        </div>
+
+        <button type="submit">Finalizar Consulta</button>
+    </form>
+</div>
+
+<!-- Scripts -->
+<script>
+    function selecionarConsulta(id) {
+        $('input[name="consultaId"]').val(id);
+
+        $('.btn-selecionar').removeClass('success');
+        $(`button[data-consulta-id="${id}"]`).addClass('success');
+
+        $('html, body').animate({
+            scrollTop: $("#formConsulta").offset().top
+        }, 500);
+    }
+
+    $(document).ready(function() {
+        $('#formConsulta').on('submit', function(e) {
+            e.preventDefault();
+
+            var consultaId = $('input[name="consultaId"]').val();
+            var descricao = $('#descricao').val();
+
+            if (!consultaId) {
+                alert('Por favor, selecione uma consulta primeiro!');
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/consulta/finalizar',
+                data: {
+                    consultaId: consultaId,
+                    descricao: descricao
+                },
+                success: function(response) {
+                    console.log('Resposta:', response);
+                    $(`button[data-consulta-id="${consultaId}"]`)
+                        .closest('tr')
+                        .find('td:eq(3)')
+                        .text('Finalizada');
+
+                    $('#descricao').val('');
+                    $('input[name="consultaId"]').val('');
+                    $('.btn-selecionar').removeClass('success');
+
+                    alert('Consulta finalizada com sucesso!');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Erro:', xhr.responseText);
+                    alert('Erro ao finalizar consulta: ' + error);
+                }
+            });
+        });
+    });
+
+
+</script>
+</body>
+</html>

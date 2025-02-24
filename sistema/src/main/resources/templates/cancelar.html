@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancelar Consulta</title>
+    <link rel="stylesheet" href="/css/cancelar.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Cancelar Consulta</h2>
+        <form id="cancel-form">
+            <label for="appointment-id">ID da Consulta:</label>
+            <input type="text" id="appointment-id" placeholder="Digite o ID da consulta" required>
+            <button type="submit">CANCELAR CONSULTA</button>
+        </form>
+    </div>
+<script>
+    document.getElementById('cancel-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const consultaId = document.getElementById('appointment-id').value;
+
+        try {
+            const response = await fetch(`/consulta/${consultaId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                alert('Consulta cancelada com sucesso!');
+                document.getElementById('cancel-form').reset();
+            } else {
+                alert('Erro ao cancelar consulta. Verifique o ID e tente novamente.');
+            }
+        } catch (error) {
+            alert('Erro ao processar sua solicitação.');
+        }
+    });
+
+</script>
+</body>
+</html>

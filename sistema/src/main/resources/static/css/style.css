@@ -20,7 +20,7 @@ body{
 
 .navbar{
     background-color:#89CFF0;
-    padding: lrem;
+    padding: 1rem;
     position: sticky;
     top:0;
     box-shadow: 10px 0px 10px #89CFF0;

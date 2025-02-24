@@ -6,20 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Modelo</title>
-  <link rel="stylesheet" href="assets/css/consultas.css">
+  <link rel="stylesheet" href="/css/consultas.css">
  </head>
  <body>
     <main>
         <section class="formulario">
             <div class="container">
                 <h1>LOGIN</h1>
-                <form action="">
-                   <input type="text" name="" id="" placeholder="Email:" required>
-                   <input type="text" name="" id="" placeholder="Senha:" required>
-                   <div class="btn"> 
-                   <a href="consultasmedico.html" class="entrar"> ENTRAR</a>
-                   </div>
+                <form action="/paciente/login" method="post">
+                    <input type="email" name="email" placeholder="Email:" required>
+                    <input type="password" name="senha" placeholder="Senha:" required>
+                    <div class="btn">
+                        <input type="submit" class="entrar" value="ENTRAR">
+                    </div>
                 </form>
+
             </div>
 
         </section>

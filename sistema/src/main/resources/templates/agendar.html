@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marcar Consulta</title>
+    <link rel="stylesheet" href="/css/realizar.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>Marcar Consulta</h2>
+        <p>Escolha o especialista e horário de sua preferência</p>
+    </div>
+    <div class="accent-bar"></div>
+
+    <form id="appointment-form">
+        <input type="hidden" id="pacienteId" value="1">
+
+        <div class="form-group">
+            <label for="specialist">Especialidade Médica</label>
+            <select id="specialist" required>
+                <option value="" disabled selected>Selecione uma especialidade</option>
+                <option value="cardiologista">Cardiologia</option>
+                <option value="dermatologista">Dermatologia</option>
+                <option value="ortopedista">Ortopedia</option>
+                <option value="pediatra">Pediatria</option>
+                <option value="ginecologista">Ginecologia</option>
+                <option value="clinico">Clínica Geral</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="doctor">Médico</label>
+            <select id="doctor" required>
+                <option value="" disabled selected>Primeiro selecione uma especialidade</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="date">Data da Consulta</label>
+            <input type="date" id="date" required>
+        </div>
+
+        <div class="form-group">
+            <label for="time">Horário</label>
+            <input type="time" id="time" required>
+        </div>
+
+        <!-- Div para avisos de lotação -->
+        <div id="lotacao-aviso" class="alert" style="display: none; margin: 10px 0; padding: 10px; border-radius: 4px;">
+        </div>
+
+        <!-- Opção de lista de espera -->
+        <div class="form-group" id="lista-espera-container" style="display: none;">
+            <label>
+                <input type="checkbox" id="lista-espera" name="lista-espera">
+                Desejo entrar na lista de espera caso não haja horários disponíveis
+            </label>
+        </div>
+
+        <button type="submit">Agendar Consulta</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('appointment-form');
+        const specialistSelect = document.getElementById('specialist');
+        const doctorSelect = document.getElementById('doctor');
+        const dateInput = document.getElementById('date');
+        const timeInput = document.getElementById('time');
+        const lotacaoAviso = document.getElementById('lotacao-aviso');
+        const listaEsperaContainer = document.getElementById('lista-espera-container');
+
+        // Configurar data mínima para hoje
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.min = today;
+
+        // Carregar médicos quando uma especialidade é selecionada
+        specialistSelect.addEventListener('change', async function() {
+            const especialidade = this.value;
+            try {
+                const response = await fetch(`/medico/por-especialidade?especialidade=${especialidade}`
+                );
+                const medicos = await response.json();
+
+                doctorSelect.innerHTML = '<option value="" disabled selected>Selecione um médico</option>';
+                medicos.forEach(medico => {
+                    doctorSelect.innerHTML += `<option value="${medico.id}">${medico.nome}</option>`;
+                });
+                doctorSelect.disabled = false;
+            } catch (error) {
+                console.error('Erro ao carregar médicos:', error);
+            }
+        });
+
+        // Verificar disponibilidade quando data/médico são selecionados
+        async function verificarDisponibilidade() {
+            if (!doctorSelect.value || !dateInput.value) return;
+
+            try {
+                const response = await fetch(`/consulta/verificar-disponibilidade?medicoId=${doctorSelect.value}&data=${dateInput.value}`
+                );
+                const disponibilidade = await response.json();
+
+                if (!disponibilidade.disponivel) {
+                    lotacaoAviso.style.display = 'block';
+                    lotacaoAviso.style.backgroundColor = '#ffecb3';
+                    lotacaoAviso.style.color = '#856404';
+                    lotacaoAviso.textContent = 'Agenda lotada para esta data. Deseja entrar na lista de espera?';
+                    listaEsperaContainer.style.display = 'block';
+                } else {
+                    lotacaoAviso.style.display = 'none';
+                    listaEsperaContainer.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Erro ao verificar disponibilidade:', error);
+            }
+        }
+
+        dateInput.addEventListener('change', verificarDisponibilidade);
+        doctorSelect.addEventListener('change', verificarDisponibilidade);
+
+        // Submissão do formulário
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const dadosConsulta = {
+                medicoId: doctorSelect.value,
+                pacienteId: document.getElementById('pacienteId').value,
+                data: dateInput.value,
+                hora: timeInput.value,
+                listaEspera: document.getElementById('lista-espera')?.checked || false
+            };
+
+            try {
+                const response = await fetch('/consulta/agendar-ajax', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dadosConsulta)
+                });
+
+                if (response.ok) {
+                    const resultado = await response.json();
+                    alert('Consulta agendada com sucesso!');
+                    window.location.href = '/minhas-consultas';
+                } else {
+                    const erro = await response.json();
+                    alert(`Erro ao agendar consulta: ${erro.mensagem}`);
+                }
+            } catch (error) {
+                console.error('Erro ao agendar consulta:', error);
+                alert('Erro ao agendar consulta. Tente novamente mais tarde.');
+            }
+        });
+    });
+</script>
+</body>

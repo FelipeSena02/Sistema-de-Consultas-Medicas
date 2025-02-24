@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Modelo</title>
+  <link rel="stylesheet" href="/css/paciente.css">
+ </head>
+ <body>
+    <main>
+        <section class="formulario">
+            <div class="container">
+                <h1>FAÇA SEU CADASTRO</h1>
+                <form action="/paciente/cadastrar" method="post">
+                    <input type="text" name="nome" placeholder="Seu nome Completo:" required>
+                    <input type="number" name="idade" placeholder="Idade:" required>
+                    <input type="email" name="email" placeholder="Seu Email:" required>
+                    <input type="password" name="senha" placeholder="Senha:" required>
+                    <input type="text" name="planoDeSaude" placeholder="Plano de saúde:">
+                    <input type="checkbox" id="sem-plano" name="semPlano"> Não tenho plano de saúde
+                    <div class="btn-enviar">
+                        <input type="submit" value="CADASTRAR">
+                    </div>
+                </form>
+
+                <div class="btn">
+                   <a href="/paciente/login" class="login"> LOGIN</a>
+                </div>
+                
+            </div>
+
+        </section>
+    </main>
+ </body>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Modelo</title>
+  <link rel="stylesheet" href="/css/medico.css">
+ </head>
+ <body>
+    <main>
+        <section class="formulario">
+            <div class="container">
+                <h1>FAÇA SEU CADASTRO</h1>
+                <form action="/medico/cadastrar" method="post">
+                    <input type="text" name="nome" placeholder="Seu nome Completo:" required>
+                    <input type="text" name="especialidade" placeholder="Especialidade:" required>
+                    <input type="email" name="email" placeholder="Email:" required>
+                    <input type="password" name="senha" placeholder="Senha:" required>
+                    <input type="text" name="planosAceitos" placeholder="Plano de saúde que atende:" required>
+                    <div class="btn-enviar">
+                        <input type="submit" value="CADASTRAR">
+                    </div>
+                </form>
+
+                <div class="btn">
+                    <a href="/medico/login" class="login"> LOGIN</a>
+                 </div>
+            </div>
+
+        </section>
+    </main>
+ </body>

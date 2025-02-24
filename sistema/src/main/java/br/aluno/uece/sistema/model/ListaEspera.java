@@ -2,17 +2,15 @@ package br.aluno.uece.sistema.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "consultas")
-public class Consulta {
+@Table(name = "lista_espera")
+public class ListaEspera {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(length = 1000) // ou o tamanho que preferir
-    private String descricao;
 
     @ManyToOne
     @JoinColumn(name = "medico_id", nullable = false)
@@ -28,17 +26,10 @@ public class Consulta {
     @Column(nullable = false)
     private LocalTime hora;
 
-    @Column
-    private Integer avaliacao;
+    @Column(name = "data_registro", nullable = false)
+    private LocalDateTime dataRegistro = LocalDateTime.now();
 
-    @Column
-    private String comentario;
-
-    @Column
-    private StatusConsulta status = StatusConsulta.AGENDADA;
-
-    public Consulta() {}
-
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -79,36 +70,11 @@ public class Consulta {
         this.hora = hora;
     }
 
-    public Integer getAvaliacao() {
-        return avaliacao;
+    public LocalDateTime getDataRegistro() {
+        return dataRegistro;
     }
 
-    public void setAvaliacao(Integer avaliacao) {
-        this.avaliacao = avaliacao;
+    public void setDataRegistro(LocalDateTime dataRegistro) {
+        this.dataRegistro = dataRegistro;
     }
-
-    public String getComentario() {
-        return comentario;
-    }
-
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
-    }
-
-    public StatusConsulta getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusConsulta status) {
-        this.status = status;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
 }
